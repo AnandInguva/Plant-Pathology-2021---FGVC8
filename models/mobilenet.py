@@ -1,7 +1,8 @@
 import tensorflow as tf
 
 
-def load_model(input_image_size, num_classes, random_weights=False, unfreeze_layers=False):
+def load_model(input_image_size, num_classes, random_weights=False, unfreeze_layers=False,
+               augmentation_layer=None):
     if random_weights:
         weights = None
     else:
@@ -17,8 +18,12 @@ def load_model(input_image_size, num_classes, random_weights=False, unfreeze_lay
 
     i = tf.keras.layers.Input([None, None, 3], dtype=tf.uint8)
     x = tf.cast(i, tf.float32)
+    # adding augmentation layer
+    if augmentation_layer:
+        x = augmentation_layer(x)
     x = preprocessor(x)
     x = base_model(x)
+    x = tf.keras.layers.Flatten()(x)
     x = output_layer(x)
     model = tf.keras.Model(inputs=[i], outputs=[x])
     return model

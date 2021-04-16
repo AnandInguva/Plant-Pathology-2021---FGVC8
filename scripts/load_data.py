@@ -66,8 +66,6 @@ def load_data(path, validation_fold=4):
     for i in range(len(unique_labels)):
         class_mapping[unique_labels[i]] = i
 
-    classes = list(class_mapping.keys())
-
     label_to_cat_label_map = {}
     for key, value in class_mapping.items():
         label_to_cat_label_map[value] = key
@@ -92,4 +90,5 @@ def load_data(path, validation_fold=4):
     train_labels_name = train_df['underlying_labels'].tolist()
     val_labels_name = val_df['underlying_labels'].tolist()
 
+    print(df.head(15))
     return train_filenames, val_filenames, train_multi_label_labels, val_multi_label_labels, train_multi_class_labels, val_multi_class_labels, train_labels_name, val_labels_name, num_classes, unique_labels, class_mapping, label_to_cat_label_map
